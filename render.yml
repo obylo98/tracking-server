@@ -1,4 +1,4 @@
 services:
   - name: flask-app
     env: python
-    startCommand: gunicorn tracking_pixel.py:app
+    startCommand: gunicorn wsgi:app --workers 4

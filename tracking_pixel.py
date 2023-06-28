@@ -1,28 +1,29 @@
-from flask import Flask, send_file, request
+from flask import Flask, send_file, request, render_template
 import datetime
 
 app = Flask(__name__)
 
+log_data = []
+
 @app.route('/pixel')
 def tracking_pixel():
-    # Get tracking data
     device = request.user_agent.string
     open_time = datetime.datetime.now()
     location = request.headers.get('X-Forwarded-For', request.remote_addr)
 
-    # Log the tracking data (you can customize the storage method)
-    log_tracking_data(device, open_time, location)
+    log_entry = {
+        'device': device,
+        'open_time': open_time,
+        'location': location
+    }
 
-    # Return a 1x1 transparent pixel image
+    log_data.append(log_entry)
+
     return send_file('pixel.png', mimetype='image/png')
 
-def log_tracking_data(device, open_time, location):
-    # Write the tracking data to a log file or store it in a database
-    with open('tracking_log.txt', 'a') as file:
-        file.write(f"Device: {device}\n")
-        file.write(f"Open Time: {open_time}\n")
-        file.write(f"Location: {location}\n")
-        file.write('\n')
+@app.route('/log')
+def view_log():
+    return render_template('log.html', log_entries=log_data)
 
 if __name__ == '__main__':
     app.run()

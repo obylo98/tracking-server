@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tracking Pixel Log</title>
+  </head>
+  <body>
+    <h1>Tracking Pixel Log</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Device</th>
+          <th>Open Time</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in log_entries %}
+        <tr>
+          <td>{{ entry.device }}</td>
+          <td>{{ entry.open_time }}</td>
+          <td>{{ entry.location }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
